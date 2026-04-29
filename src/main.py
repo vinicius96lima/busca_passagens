@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 
 load_dotenv()
 api_key = os.getenv("SERPAPI_KEY")
+print(api_key)
 historico_busca = "historico_busca_aero.xlsx"
 
 def salvar_voo(voos):
@@ -26,7 +27,8 @@ def salvar_voo(voos):
             "Destino": primeiro_voo.get("arrival_airport", {}).get("id"),
             "Companhia": primeiro_voo.get("airline"),
             "Preco_Total": voo.get("price"),
-            "Duracao_Min": voo.get("total_duration")
+            "Duracao_Min": voo.get("total_duration"),
+            "Link": voo.get("link")
         })
     df_novo = pd.DataFrame(registros)
 
@@ -71,8 +73,20 @@ def buscar_passagens(origens, destino, data_ida, data_volta, valor_maximo, adult
         # Adiciona a origem em cada voo para saber de onde veio
         for voo in melhores + outros:
             preco = voo.get('price', 0)
-            if preco <=valor_maximo:
+
+
+            link_geral = result.get("search_metadata", {}).get("google_flights_url")
+            booking_token = voo.get("booking_token")
+            link = None
+
+            if booking_token:
+                link =  f"https://www.google.com/travel/flights?tfs={booking_token}"
+            else:
+                link = link_geral or f"https://www.google.com/travel/flights?q={origem}-{destino}"
+
+            if preco > 0 and preco <= valor_maximo:
                 voo['origem_busca'] = origem
+                voo['link'] = link
                 todos_voos.append(voo)
                 print(f"✅ Voo encontrado! {origem} → {destino} | R${preco} para {adultos} pessoas")
             else:
@@ -95,19 +109,27 @@ def enviar_email(voos):
     preco = melhor_voo.get('price')
     origem = melhor_voo.get('origem_busca')
     duracao = melhor_voo.get('total_duration')
+    link = melhor_voo.get('link')
 
     corpo = f"""
-        Bom dia! Aqui está o melhor voo encontrado hoje:
-
+        <h2>Bom dia! Aqui está o melhor voo encontrado hoje:
+        
+        <p>
         🛫 Origem: {origem}
         🛬 Destino: POA
         💰 Preço: R${preco} para 2 pessoas
         ⏱️ Duração: {duracao} minutos
-
-        📅 Data consulta: {datetime.today().strftime('%d/%m/%Y %H:%M')}
+        </p>
+        
+        <p>
+        <a href ="{link}">🔗 Clique aqui para ver o voo</a>
+        </p>
+        
+        <p>📅 Data consulta: {datetime.today().strftime('%d/%m/%Y %H:%M')}</p>
         """
 
-    msg=MIMEMultipart()
+    msg = MIMEMultipart()
+    msg.attach(MIMEText(corpo, 'html'))
     msg["FROM"] = os.getenv('EMAIL')
     msg['To'] = os.getenv('EMAIL_DESTINO')
     msg['Subject'] = f'Melhor passagem do dia | R$ {preco}'
