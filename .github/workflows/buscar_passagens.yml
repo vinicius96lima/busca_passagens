@@ -49,10 +49,10 @@ jobs:
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
           APP_KEY: ${{ secrets.APP_KEY }}
 
-          SERVER: ${{ secrets.SERVER }}
-          DATABASE: ${{ secrets.DATABASE }}
-          UID: ${{ secrets.UID }}
-          PWD: ${{ secrets.PWD }}
+          SERVER: ${{secrets.SERVER}}
+          DATABASE: ${{secrets.DATABASE}}
+          UID: ${{secrets.UID}}
+          PWD: ${{secrets.PWD}}
 
           TZ: America/Sao_Paulo
 
