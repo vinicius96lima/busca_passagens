@@ -31,7 +31,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Debug
+        run: |
+            echo $SERVER
+            echo $DATABASE
+            echo $UID
+      
       - name: Rodar script
+      
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
           EMAIL: ${{ secrets.EMAIL }}
