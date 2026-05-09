@@ -31,9 +31,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      
+      - name: Debug
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+
+        run: |
+          echo $SERVER
+          echo $DATABASE
+          echo $UID
+
       - name: Rodar script
-      
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
           EMAIL: ${{ secrets.EMAIL }}
@@ -45,12 +54,6 @@ jobs:
           UID: ${{ secrets.UID }}
           PWD: ${{ secrets.PWD }}
 
-      - name: Debug
-        run: |
-            echo $SERVER
-            echo $DATABASE
-            echo $UID
-            
           TZ: America/Sao_Paulo
 
         run: python src/main.py
