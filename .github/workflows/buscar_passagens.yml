@@ -20,6 +20,15 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Get Public IP
+        run: curl ifconfig.me
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        run: python src/main.py
+
       - name: Instalar ODBC Driver
         run: |
           sudo apt-get update
