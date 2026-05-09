@@ -2,14 +2,16 @@ name: Buscar Passagens
 
 on:
   schedule:
-    - cron: "0 6 * * *"  # roda às 3 horas
-  workflow_dispatch:       # permite rodar manual
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
 jobs:
   executar:
+
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Clonar repositório
         uses: actions/checkout@v3
 
@@ -17,6 +19,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
+
+      - name: Instalar ODBC Driver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unixodbc-dev
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
 
       - name: Instalar dependências
         run: |
@@ -29,4 +37,12 @@ jobs:
           EMAIL: ${{ secrets.EMAIL }}
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
           APP_KEY: ${{ secrets.APP_KEY }}
+
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+          PWD: ${{ secrets.PWD }}
+
+          TZ: America/Sao_Paulo
+
         run: python src/main.py
