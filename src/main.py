@@ -24,7 +24,15 @@ def main():
     print(f"✅ Busca finalizada: {datetime.today().strftime('%d/%m/%Y %H:%M')}")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    
+    except Exception as e:
+        print("ERRO:")
+        print(e)
+        traceback.print_exc()
+        raise
+        main()
 
 
 
