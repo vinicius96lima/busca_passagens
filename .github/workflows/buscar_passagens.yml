@@ -20,36 +20,37 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Get Public IP
-        run: curl ifconfig.me
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run script
-        run: python src/main.py
-
-      - name: Instalar ODBC Driver
+      - name: Instalar ODBC Driver 18
         run: |
           sudo apt-get update
-          sudo apt-get install -y unixodbc-dev
+          sudo apt-get install -y curl gnupg unixodbc-dev
+
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+
+          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list \
+          | sudo tee /etc/apt/sources.list.d/mssql-release.list
+
+          sudo apt-get update
+
           sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
 
-      - name: Instalar dependências
+      - name: Instalar dependências Python
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Debug
+      - name: Debug variáveis
         env:
           SERVER: ${{ secrets.SERVER }}
           DATABASE: ${{ secrets.DATABASE }}
           UID: ${{ secrets.UID }}
-
         run: |
-          echo $SERVER
-          echo $DATABASE
-          echo $UID
+          echo "SERVER=$SERVER"
+          echo "DATABASE=$DATABASE"
+          echo "UID=$UID"
+
+      - name: Get Public IP
+        run: curl ifconfig.me
 
       - name: Rodar script
         env:
@@ -58,10 +59,10 @@ jobs:
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
           APP_KEY: ${{ secrets.APP_KEY }}
 
-          SERVER: ${{secrets.SERVER}}
-          DATABASE: ${{secrets.DATABASE}}
-          UID: ${{secrets.UID}}
-          PWD: ${{secrets.PWD}}
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+          PWD: ${{ secrets.PWD }}
 
           TZ: America/Sao_Paulo
 
