@@ -41,9 +41,9 @@ jobs:
       # 🔍 Debug para garantir secrets
       - name: Debug variáveis
         env:
-          SERVER: ${{ secrets.SERVER }}
-          DATABASE: ${{ secrets.DATABASE }}
-          UID: ${{ secrets.UID }}
+          SERVER: ${{secrets.SERVER}}
+          DATABASE: ${{secrets.DATABASE}}
+          UID: ${{secrets.UID}}
         run: |
           echo "SERVER=$SERVER"
           echo "DATABASE=$DATABASE"
@@ -52,7 +52,7 @@ jobs:
       - name: Debug ODBC Drivers
         run: |
           odbcinst -q -d
-          isql -v "DRIVER={ODBC Driver 18 for SQL Server};SERVER=${{ secrets.SERVER }};DATABASE=${{ secrets.DATABASE }};UID=${{ secrets.UID }};PWD=${{ secrets.PWD }};Encrypt=yes;TrustServerCertificate=no;"
+          isql -v "DRIVER={ODBC Driver 18 for SQL Server};SERVER=${{secrets.SERVER}};DATABASE=${{secrets.DATABASE}};UID=${{secrets.UID}};PWD=${{secrets.PWD}};Encrypt=yes;TrustServerCertificate=no;"
 
 
       # 🚀 Executa o script FINAL
