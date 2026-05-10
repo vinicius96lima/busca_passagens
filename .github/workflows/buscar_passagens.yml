@@ -46,7 +46,7 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
-          nc -vz tcp:admin-voo.database.windows.net 1433
+          nc -vz admin-voo.database.windows.net 1433
           echo "SENHASQL length = ${#SENHASQL}"
           echo "SENHASQL first chars = ${SENHASQL:0:3}"
           echo "SENHASQL exists? ${SENHASQL:+YES}"
