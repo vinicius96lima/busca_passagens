@@ -1,28 +1,27 @@
-import pyodbc
-from dotenv import load_dotenv
 import os
-
-load_dotenv()
+import pyodbc
 
 def get_conexao():
-    server = os.getenv('Server')
-    database = os.getenv('Database')
-    uid = os.getenv('Uid')
-    pwd = os.getenv('Pwd')
+    server = os.getenv('SERVER')
+    database = os.getenv('DATABASE')
+    uid = os.getenv('UID')
+    pwd = os.getenv('PWD')
 
-    print("Server =", server)
-    print("Database =", database)
-    print("Uid =", uid)
-    print("Pwd existe =", bool(pwd))
+    print("SERVER =", server)
+    print("DATABASE =", database)
+    print("UID =", uid)
+    print("PWD existe =", bool(pwd))
 
-    return pyodbc.connect(
+    conn_str = (
         f"Driver={{ODBC Driver 18 for SQL Server}};"
         f"Server={server};"
         f"Database={database};"
         f"Uid={uid};"
         f"Pwd={pwd};"
-        f"Encrypt=yes;"
-        f"TrustServerCertificate=no;"
-        f"Connection Timeout=30;"
+        "Encrypt=yes;"
+        "TrustServerCertificate=no;"
+        "Connection Timeout=30;"
+    )
+    print("Connection string usada:", conn_str.replace(pwd, "***"))
 
-)
+    return pyodbc.connect(conn_str)
