@@ -40,10 +40,15 @@ jobs:
           
       - name: Debug SENHASQL real
         env:
-          PWD: ${{ secrets.SENHASQL }}
+          SENHASQL: ${{ secrets.SENHASQL }}
+        
         run: |
-          echo "PWD length = ${#SENHASQL}"
-          echo "PWD first chars = ${SENHASQL:0:3}"
+          echo "SENHASQL length = ${#SENHASQL}"
+          echo "SENHASQL first chars = ${SENHASQL:0:3}"
+          echo "SENHASQL exists? ${SENHASQL:+YES}"
+          echo "length: ${#SENHASQL}"
+          env | grep SENHA
+        
 
       # 🚀 Executa o script FINAL
       - name: Rodar script
@@ -53,7 +58,7 @@ jobs:
           EMAIL_DESTINO: ${{secrets.EMAIL_DESTINO}}
           APP_KEY: ${{secrets.APP_KEY}}
           SERVER: ${{secrets.SERVER}}
-          PWD: ${{secrets.SENHASQL}}
+          SENHASQL: ${{secrets.SENHASQL}}
           DATABASE: ${{secrets.DATABASE}}
           UID: ${{secrets.UID}}
          
