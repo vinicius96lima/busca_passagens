@@ -62,10 +62,10 @@ jobs:
           EMAIL: ${{secrets.EMAIL}}
           EMAIL_DESTINO: ${{secrets.EMAIL_DESTINO}}
           APP_KEY: ${{secrets.APP_KEY}}
-          SERVER: ${{secrets.SERVER}}
-          DATABASE: ${{secrets.DATABASE}}
-          UID: ${{secrets.UID}}
-          PWD: ${{secrets.PWD}}
+          SERVER: ${{secrets.Server}}
+          DATABASE: ${{secrets.Database}}
+          UID: ${{secrets.Uid}}
+          PWD: ${{secrets.Pwd}}
 
           TZ: America/Sao_Paulo
 
