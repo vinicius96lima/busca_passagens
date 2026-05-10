@@ -8,7 +8,6 @@ on:
 jobs:
   executar:
     runs-on: ubuntu-latest
-    environment: dev   # ✅ adiciona o environment
 
     steps:
       - name: Clonar repositório
@@ -19,57 +18,74 @@ jobs:
         with:
           python-version: "3.11"
 
-      # 🔥 Instala ODBC Driver 18 corretamente no Linux
-      - name: Install ODBC Driver 18
+      # Instala ODBC Driver 18 no Ubuntu
+      - name: Instalar ODBC Driver 18
         run: |
           sudo apt-get update
           sudo apt-get install -y curl gnupg unixodbc-dev
-          
           curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-
           curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list \
           | sudo tee /etc/apt/sources.list.d/mssql-release.list
-
           sudo apt-get update
           sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
 
-      # 📦 Instala dependências Python
+      # Instala dependências Python
       - name: Instalar dependências
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Debug SENHASQL real
+      # Debug seguro para confirmar secrets
+      - name: Debug variáveis
         env:
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
           SENHASQL: ${{ secrets.SENHASQL }}
-          AZURE_CLIENTE_ID: ${{ secrets.AZURE_CLIENTE_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
-          nc -vz admin-voo.database.windows.net 1433
-          echo "SENHASQL length = ${#SENHASQL}"
-          echo "SENHASQL first chars = ${SENHASQL:0:3}"
-          echo "SENHASQL exists? ${SENHASQL:+YES}"
-          echo "length: ${#SENHASQL}"
-          env | grep SENHA
+          echo "SERVER recebido: ${SERVER:+OK}"
+          echo "DATABASE recebido: ${DATABASE:+OK}"
+          echo "UID recebido: ${UID:+OK}"
+          echo "SENHASQL recebido: ${SENHASQL:+OK}"
 
-      # 🚀 Executa o script FINAL
+      # Teste de conexão Python antes do script principal
+      - name: Testar conexão SQL
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+          SENHASQL: ${{ secrets.SENHASQL }}
+        run: |
+          python - <<EOF
+          import os, pyodbc
+          conn_str = (
+              f"Driver={{ODBC Driver 18 for SQL Server}};"
+              f"Server={os.getenv('SERVER')};"
+              f"Database={os.getenv('DATABASE')};"
+              f"Uid={os.getenv('UID')};"
+              f"Senhasql={os.getenv('SENHASQL')};"
+              "Encrypt=yes;"
+              "TrustServerCertificate=no;"
+              "Connection Timeout=30;"
+          )
+          print("Connection string:", conn_str.replace(os.getenv('PWD'), '***'))
+          try:
+              pyodbc.connect(conn_str)
+              print("✅ Conexão OK")
+          except Exception as e:
+              print("❌ Erro:", e)
+          EOF
+
+      # Executa o script principal
       - name: Rodar script
         env:
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+          SENHASQL: ${{ secrets.SENHASQL }}
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
           EMAIL: ${{ secrets.EMAIL }}
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
           APP_KEY: ${{ secrets.APP_KEY }}
-          SERVER: ${{ secrets.SERVER }}
-          SENHASQL: ${{ secrets.SENHASQL }}
-          DATABASE: ${{ secrets.DATABASE }}
-          UID: ${{ secrets.UID }}
-
-          # 🔐 Azure secrets adicionados
-          AZURE_CLIENTE_ID: ${{ secrets.AZURE_CLIENTE_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
           TZ: America/Sao_Paulo
-
         run: python src/main.py
