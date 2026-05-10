@@ -8,6 +8,7 @@ on:
 jobs:
   executar:
     runs-on: ubuntu-latest
+    environment: dev   # ✅ adiciona o environment
 
     steps:
       - name: Clonar repositório
@@ -37,12 +38,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: Debug SENHASQL real
         env:
           SENHASQL: ${{ secrets.SENHASQL }}
-          
-        
+          AZURE_CLIENTE_ID: ${{ secrets.AZURE_CLIENTE_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
           nc -vz tcp:admin-voo.database.windows.net 1433
           echo "SENHASQL length = ${#SENHASQL}"
@@ -50,20 +52,23 @@ jobs:
           echo "SENHASQL exists? ${SENHASQL:+YES}"
           echo "length: ${#SENHASQL}"
           env | grep SENHA
-        
 
       # 🚀 Executa o script FINAL
       - name: Rodar script
         env:
-          SERPAPI_KEY: ${{secrets.SERPAPI_KEY}}
-          EMAIL: ${{secrets.EMAIL}}
-          EMAIL_DESTINO: ${{secrets.EMAIL_DESTINO}}
-          APP_KEY: ${{secrets.APP_KEY}}
-          SERVER: ${{secrets.SERVER}}
-          SENHASQL: ${{secrets.SENHASQL}}
-          DATABASE: ${{secrets.DATABASE}}
-          UID: ${{secrets.UID}}
-         
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          SERVER: ${{ secrets.SERVER }}
+          SENHASQL: ${{ secrets.SENHASQL }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+
+          # 🔐 Azure secrets adicionados
+          AZURE_CLIENTE_ID: ${{ secrets.AZURE_CLIENTE_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
           TZ: America/Sao_Paulo
 
