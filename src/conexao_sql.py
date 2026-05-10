@@ -17,7 +17,7 @@ def get_conexao():
         f"Server={server};"
         f"Database={database};"
         f"Uid={uid};"
-        f"senhasql={senhasql};"
+        f"Pwd={senhasql};"
         "Encrypt=yes;"
         "TrustServerCertificate=no;"
         "Connection Timeout=30;"
