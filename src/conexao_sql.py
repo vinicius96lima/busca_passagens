@@ -22,7 +22,7 @@ def get_conexao():
         f"UID={uid};"
         f"PWD={pwd};"
         f"Encrypt=yes;"
-        f"TrustServerCertificate=yes;"
+        f"TrustServerCertificate=no;"
         f"Connection Timeout=30;"
 
 )
