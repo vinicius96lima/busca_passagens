@@ -38,33 +38,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Testar conexão Python
-        env:
-          SERVER: ${{ secrets.SERVER }}
-          DATABASE: ${{ secrets.DATABASE }}
-          UID: ${{ secrets.UID }}
-          PWD: ${{ secrets.PWD }}
-        run: |
-          python - <<EOF
-          import os, pyodbc
-          conn_str = (
-              f"Driver={{ODBC Driver 18 for SQL Server}};"
-              f"Server={os.getenv('SERVER')};"
-              f"Database={os.getenv('DATABASE')};"
-              f"Uid={os.getenv('UID')};"
-              f"Pwd={os.getenv('PWD')};"
-              "Encrypt=yes;"
-              "TrustServerCertificate=no;"
-              "Connection Timeout=30;"
-          )
-          print("Connection string:", conn_str.replace(os.getenv('PWD'), '***'))
-          try:
-              pyodbc.connect(conn_str)
-              print("✅ Conexão OK")
-          except Exception as e:
-              print("❌ Erro:", e)
-          EOF
-
+      - name: Dump env
+        run: env
 
       # 🚀 Executa o script FINAL
       - name: Rodar script
