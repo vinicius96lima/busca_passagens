@@ -38,12 +38,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Debug PWD real
+      - name: Debug SENHASQL real
         env:
-          PWD: ${{ secrets.PWD }}
+          PWD: ${{ secrets.SENHASQL }}
         run: |
-          echo "PWD length = ${#PWD}"
-          echo "PWD first chars = ${PWD:0:3}"
+          echo "PWD length = ${#SENHASQL}"
+          echo "PWD first chars = ${SENHASQL:0:3}"
 
       # 🚀 Executa o script FINAL
       - name: Rodar script
@@ -53,7 +53,7 @@ jobs:
           EMAIL_DESTINO: ${{secrets.EMAIL_DESTINO}}
           APP_KEY: ${{secrets.APP_KEY}}
           SERVER: ${{secrets.SERVER}}
-          PWD: ${{secrets.PWD}}
+          PWD: ${{secrets.SENHASQL}}
           DATABASE: ${{secrets.DATABASE}}
           UID: ${{secrets.UID}}
          
