@@ -38,21 +38,32 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 🔍 Debug para garantir secrets
-      - name: Debug variáveis
+      - name: Testar conexão Python
         env:
-          SERVER: ${{secrets.SERVER}}
-          DATABASE: ${{secrets.DATABASE}}
-          UID: ${{secrets.UID}}
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+          PWD: ${{ secrets.PWD }}
         run: |
-          echo "SERVER=$SERVER"
-          echo "DATABASE=$DATABASE"
-          echo "UID=$UID"
-          if [ -z "$PWD" ]; then echo "PWD está vazio!"; else echo "PWD recebido."; fi
-      - name: Debug ODBC Drivers
-        run: |
-          odbcinst -q -d
-          isql -v "DRIVER={ODBC Driver 18 for SQL Server};SERVER=${{secrets.SERVER}};DATABASE=${{secrets.DATABASE}};UID=${{secrets.UID}};PWD=${{secrets.PWD}};Encrypt=yes;TrustServerCertificate=no;"
+          python - <<EOF
+          import os, pyodbc
+          conn_str = (
+              f"Driver={{ODBC Driver 18 for SQL Server}};"
+              f"Server={os.getenv('SERVER')};"
+              f"Database={os.getenv('DATABASE')};"
+              f"Uid={os.getenv('UID')};"
+              f"Pwd={os.getenv('PWD')};"
+              "Encrypt=yes;"
+              "TrustServerCertificate=no;"
+              "Connection Timeout=30;"
+          )
+          print("Connection string:", conn_str.replace(os.getenv('PWD'), '***'))
+          try:
+              pyodbc.connect(conn_str)
+              print("✅ Conexão OK")
+          except Exception as e:
+              print("❌ Erro:", e)
+          EOF
 
 
       # 🚀 Executa o script FINAL
@@ -62,10 +73,10 @@ jobs:
           EMAIL: ${{secrets.EMAIL}}
           EMAIL_DESTINO: ${{secrets.EMAIL_DESTINO}}
           APP_KEY: ${{secrets.APP_KEY}}
-          SERVER: ${{secrets.Server}}
-          DATABASE: ${{secrets.Database}}
-          UID: ${{secrets.Uid}}
-          PWD: ${{secrets.Pwd}}
+          SERVER: ${{secrets.SERVER}}
+          DATABASE: ${{secrets.DATABASE}}
+          UID: ${{secrets.UID}}
+          PWD: ${{secrets.PWD}}
 
           TZ: America/Sao_Paulo
 
