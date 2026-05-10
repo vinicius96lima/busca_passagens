@@ -37,9 +37,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Dump env
-        run: env
+          
+      - name: Debug PWD real
+        env:
+          PWD: ${{ secrets.PWD }}
+        run: |
+          echo "PWD length = ${#PWD}"
+          echo "PWD first chars = ${PWD:0:3}"
 
       # 🚀 Executa o script FINAL
       - name: Rodar script
@@ -49,9 +53,10 @@ jobs:
           EMAIL_DESTINO: ${{secrets.EMAIL_DESTINO}}
           APP_KEY: ${{secrets.APP_KEY}}
           SERVER: ${{secrets.SERVER}}
+          PWD: ${{secrets.PWD}}
           DATABASE: ${{secrets.DATABASE}}
           UID: ${{secrets.UID}}
-          PWD: ${{secrets.PWD}}
+         
 
           TZ: America/Sao_Paulo
 
