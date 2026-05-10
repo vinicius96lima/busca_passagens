@@ -48,6 +48,7 @@ jobs:
           echo "SERVER=$SERVER"
           echo "DATABASE=$DATABASE"
           echo "UID=$UID"
+          if [ -z "$PWD" ]; then echo "PWD está vazio!"; else echo "PWD recebido."; fi
 
       # 🚀 Executa o script FINAL
       - name: Rodar script
