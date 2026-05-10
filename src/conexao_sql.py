@@ -10,7 +10,7 @@ def get_conexao():
     print("SERVER =", server)
     print("DATABASE =", database)
     print("UID =", uid)
-    print("PWD existe =", bool(pwd))
+    print("PWD =", pwd)
 
     conn_str = (
         f"Driver={{ODBC Driver 18 for SQL Server}};"
@@ -22,6 +22,5 @@ def get_conexao():
         "TrustServerCertificate=no;"
         "Connection Timeout=30;"
     )
-    print("Connection string usada:", conn_str.replace(pwd, "***"))
 
     return pyodbc.connect(conn_str)
