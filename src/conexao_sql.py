@@ -17,7 +17,7 @@ def get_conexao():
 
     return pyodbc.connect(
         f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-        f"SERVER={server},1433;"
+        f"SERVER={server};"
         f"DATABASE={database};"
         f"UID={uid};"
         f"PWD={pwd};"
