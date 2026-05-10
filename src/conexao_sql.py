@@ -5,22 +5,22 @@ import os
 load_dotenv()
 
 def get_conexao():
-    server = os.getenv('SERVER')
-    database = os.getenv('DATABASE')
-    uid = os.getenv('UID')
-    pwd = os.getenv('PWD')
+    server = os.getenv('Server')
+    database = os.getenv('Database')
+    uid = os.getenv('Uid')
+    pwd = os.getenv('Pwd')
 
-    print("SERVER =", server)
-    print("DATABASE =", database)
-    print("UID =", uid)
-    print("PWD existe =", bool(pwd))
+    print("Server =", server)
+    print("Database =", database)
+    print("Uid =", uid)
+    print("Pwd existe =", bool(pwd))
 
     return pyodbc.connect(
-        f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-        f"SERVER={server};"
-        f"DATABASE={database};"
-        f"UID={uid};"
-        f"PWD={pwd};"
+        f"Driver={{ODBC Driver 18 for SQL Server}};"
+        f"Server={server};"
+        f"Database={database};"
+        f"Uid={uid};"
+        f"Pwd={pwd};"
         f"Encrypt=yes;"
         f"TrustServerCertificate=no;"
         f"Connection Timeout=30;"
