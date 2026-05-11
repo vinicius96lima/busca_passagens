@@ -1,7 +1,6 @@
 from datetime import datetime
 import pandas as pd
 import os
-from insert_sql import inserir_base
 
 historico_busca = r'C:\Users\Vinic\Desktop\Projeto_Busca_Aero\Projeto.xlsx'
 

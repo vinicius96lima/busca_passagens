@@ -1,19 +1,12 @@
 from dotenv import load_dotenv
 from serpapi import GoogleSearch
 import os
-import pandas as pd
-from salvar_voos import salvar_voo
-
-
 
 load_dotenv()
 api_key = os.getenv("SERPAPI_KEY")
-print(api_key)
-
 
 def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adultos=2):
     todos_voos = []
-    top10 = []
 
     for origem in origens:
         print(f'Iniciando Buscas com Origem, {origem}')
@@ -65,7 +58,7 @@ def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adul
                     print(f"✅ Voo encontrado! "
                           f"{origem} → {destino} | R${preco} para {adultos} pessoas")
 
-                elif preco <= valor_maximo * 1.20:
+                elif preco <= valor_maximo * 1.80:
                     voo['origem_busca'] = origem
                     voo['destino_busca'] = destino
                     voo['link'] = link
@@ -77,16 +70,39 @@ def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adul
                     print(f"❌ Voo acima do limite!"
                           f"{origem} → {destino} | R${preco} > R${valor_maximo}")
 
+        todos_voos_poa = []
+        preco_visto_poa = set()
+        for voo in todos_voos:
+            flights = voo.get('flights',[])
+            preco = voo['price']
+            if flights and preco:
+                destino = flights[0]['arrival_airport']['id']
+                if destino == 'POA' and preco not in preco_visto_poa:
+                    preco_visto_poa.add(preco)
+                    todos_voos_poa.append(voo)
 
+        todos_voos_poa = sorted(todos_voos_poa, key=lambda x: x['price'])
+        top10poa = todos_voos_poa[:10]
 
+        todos_voos_vix = []
+        preco_visto_vix = set()
+        for voo in todos_voos:
+            flights = voo.get('flights', [])
+            preco = voo['price']
+            if flights and preco:
+                destino = flights[0]['arrival_airport']['id']
+                if destino == 'VIX' and preco not in preco_visto_vix:
+                    preco_visto_vix.add(preco)
+                    todos_voos_vix.append(voo)
 
-        todos_voos = sorted(todos_voos, key=lambda x: x['price'])
-        top10 = todos_voos[:10]
+        todos_voos_vix = sorted(todos_voos_vix, key=lambda x: x['price'])
+        top10vix = todos_voos_vix[:10]
+        voos_unificados = top10poa + top10vix
 
         #Salva no histórico
-        if top10:
+        if voos_unificados:
            print('Voos Encontrados')
         else:
            print("Nenhum voo encontrado dentro do valor máximo")
 
-    return top10
+    return voos_unificados

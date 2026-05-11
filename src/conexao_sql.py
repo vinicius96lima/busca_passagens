@@ -1,16 +1,12 @@
 import os
 import pyodbc
+import time
 
-def get_conexao():
+def get_conexao(max_tentativas=5, espera=20):
     server = os.getenv('SERVER')
     database = os.getenv('DATABASE')
     uid = os.getenv('UID')
     senhasql = os.getenv('SENHASQL')
-
-    print("SERVER =", server)
-    print("DATABASE =", database)
-    print("UID =", uid)
-    print("SENHASQL =", senhasql)
 
     conn_str = (
         f"Driver={{ODBC Driver 18 for SQL Server}};"
@@ -23,4 +19,19 @@ def get_conexao():
         "Connection Timeout=30;"
     )
 
-    return pyodbc.connect(conn_str)
+    for tentativa in range(1, max_tentativas + 1):
+        try:
+            print(f'Tentativa {tentativa} de conexão...')
+            conn = pyodbc.connect(conn_str)
+            print("✅ Conexão com Azure SQL realizada!")
+            return conn
+
+        except Exception as e:
+            print(f"❌ Erro na tentativa {tentativa}: {e}")
+
+            if tentativa < max_tentativas:
+                print(f"⏳ Aguardando {espera} segundos...")
+                time.sleep(espera)
+            else:
+                print("🚨 Todas as tentativas falharam.")
+                raise
