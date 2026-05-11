@@ -35,47 +35,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Debug seguro para confirmar secrets
-      - name: Debug variáveis
-        env:
-          SERVER: ${{ secrets.SERVER }}
-          DATABASE: ${{ secrets.DATABASE }}
-          UID: ${{ secrets.UID }}
-          SENHASQL: ${{ secrets.SENHASQL }}
-        run: |
-          echo "SERVER recebido: ${SERVER:+OK}"
-          echo "DATABASE recebido: ${DATABASE:+OK}"
-          echo "UID recebido: ${UID:+OK}"
-          echo "SENHASQL recebido: ${SENHASQL:+OK}"
-
-      # Teste de conexão Python antes do script principal
-      - name: Testar conexão SQL
-        env:
-          SERVER: ${{ secrets.SERVER }}
-          DATABASE: ${{ secrets.DATABASE }}
-          UID: ${{ secrets.UID }}
-          SENHASQL: ${{ secrets.SENHASQL }}
-        run: |
-          python - <<EOF
-          import os, pyodbc
-          conn_str = (
-              f"Driver={{ODBC Driver 18 for SQL Server}};"
-              f"Server={os.getenv('SERVER')};"
-              f"Database={os.getenv('DATABASE')};"
-              f"Uid={os.getenv('UID')};"
-              f"Senhasql={os.getenv('SENHASQL')};"
-              "Encrypt=yes;"
-              "TrustServerCertificate=no;"
-              "Connection Timeout=30;"
-          )
-          print("Connection string:", conn_str.replace(os.getenv('PWD'), '***'))
-          try:
-              pyodbc.connect(conn_str)
-              print("✅ Conexão OK")
-          except Exception as e:
-              print("❌ Erro:", e)
-          EOF
-
       # Executa o script principal
       - name: Rodar script
         env:
