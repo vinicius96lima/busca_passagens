@@ -1,4 +1,4 @@
-from src.services.conexao_outlook import connect_azure
+from src.services.conexao_outlook_local import connect_azure
 import requests
 
 

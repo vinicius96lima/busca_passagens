@@ -1,4 +1,4 @@
-from src.services.conexao_outlook import connect_azure
+from src.services.connect_actions import connect_azure
 from dotenv import load_dotenv
 import requests
 import time
@@ -37,6 +37,7 @@ def move_emails_failed(espera=10):
             move_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}/move")
             res = requests.post(move_url, headers=headers, json=body)
             print('Emails de falhas movidos com sucesso')
+
 
 
 

@@ -1,4 +1,4 @@
-from src.services.conexao_outlook import connect_azure
+from src.services.connect_actions import connect_azure
 from dotenv import load_dotenv
 import requests
 import time
@@ -6,10 +6,10 @@ import os
 
 load_dotenv()
 
-
 def move_emails_voos(espera=10):
     headers = connect_azure()
     pasta_voos = os.getenv('IDFOLDERVOO')
+
 
     #Filtrar Assunto
     assunto_voo = "Melhor passagem"
@@ -38,8 +38,6 @@ def move_emails_voos(espera=10):
             move_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}/move")
             res = requests.post(move_url, headers=headers, json=body)
             print('Emails com voos movidos com sucesso')
-
-
 
 
 

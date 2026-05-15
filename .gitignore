@@ -7,3 +7,4 @@ venv/
 *.xlsm
 *.json
 *.bin
+src/services/conexao_outlook_local.py
