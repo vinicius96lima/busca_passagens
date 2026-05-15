@@ -4,26 +4,27 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-def enviar_email_vix(voos):
+
+def enviar_email_poa(voos):
     if not voos:
         print('Nenhum voo para enviar')
         return
 
-    voos_vix = [
+    voos_poa = [
         voo for voo in voos
-        if voo.get('destino_busca') == 'VIX'
+        if voo.get('destino_busca') == 'POA'
     ]
 
-    if not voos_vix:
-        return None
 
-    melhor_voo_VIX = min(voos_vix, key=lambda x: x.get('price', 0))
-    preco = melhor_voo_VIX.get('price')
-    origem = melhor_voo_VIX.get('origem_busca')
-    destino = melhor_voo_VIX.get('destino_busca')
-    duracao = melhor_voo_VIX.get('total_duration')
-    link = melhor_voo_VIX.get('link')
+    melhor_voo_POA = min(voos_poa, key=lambda x: x.get('price', 0))
+    preco = melhor_voo_POA.get('price')
+    origem = melhor_voo_POA.get('origem_busca')
+    destino = melhor_voo_POA.get('destino_busca')
+    duracao = melhor_voo_POA.get('total_duration')
+    link = melhor_voo_POA.get('link')
     print(f'voo poa {origem}, {destino}, {preco}')
+
+    send_poa_whats = origem, destino, preco, link
 
     corpo = f"""
         <h2>Bom dia! Aqui está o melhor voo encontrado hoje:
@@ -61,3 +62,5 @@ def enviar_email_vix(voos):
             print('Email enviado com sucesso')
     except Exception as e:
         print(f'Erro ao enviar e-mail, {e}')
+
+    return send_poa_whats

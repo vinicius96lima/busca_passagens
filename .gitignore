@@ -6,3 +6,4 @@ venv/
 *.xlsx
 *.xlsm
 *.json
+*.bin

@@ -1,4 +1,4 @@
-from conexao_sql import get_conexao
+from src.services.conexao_sql import get_conexao
 
 
 def inserir_base(df):
