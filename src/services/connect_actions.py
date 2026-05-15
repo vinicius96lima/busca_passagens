@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-CLIENT_ID = os.getenv("CLIENT_ID")
-REFRESH_TOKEN = os.getenv("TOKENAZUREGIT")
+CLIENT_ID = os.getenv("AZURECLIENT_ID")
+REFRESH_TOKEN = os.getenv("AZURETOKENAZUREGIT")
 SCOPES = ["Mail.Read", "Mail.ReadWrite"]
 
 def connect_azure():

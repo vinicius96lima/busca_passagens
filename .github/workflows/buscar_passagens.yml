@@ -46,15 +46,14 @@ jobs:
           EMAIL: ${{ secrets.EMAIL }}
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
           APP_KEY: ${{ secrets.APP_KEY }}
-          ACCOUNT: ${{ secrets.ACCOUNT }}
-          TOKEN: ${{ secrets.TOKEN }}
-          NUMFROM: ${{ secrets.NUMFROM }}
-          NUMTO: ${{ secrets.NUMTO }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          TOKENAZUREGIT: ${{ secrets.TOKENAZUREGIT }}
-          IDFOLDERVOO: ${{ secrets.IDFOLDERVOO }}
-          IDFOLDERLOGS: ${{ secrets.IDFOLDERLOGS }}
-          ID: ${{ secrets.ID }}
+          TWILIOACCOUNT: ${{ secrets.TWILIOACCOUNT }}
+          TWILIOTOKEN: ${{ secrets.TWILIOTOKEN }}
+          TWILIONUMFROM: ${{ secrets.TWILIONUMFROM }}
+          TWILIONUMTO: ${{ secrets.TWILIONUMTO }}
+          AZURECLIENT_ID: ${{ secrets.AZURECLIENT_ID }}
+          AZURETOKENAZUREGIT: ${{ secrets.AZURETOKENAZUREGIT }}
+          AZUREIDFOLDERVOO: ${{ secrets.AZUREIDFOLDERVOO }}
+          AZUREIDFOLDERLOGS: ${{ secrets.AZUREIDFOLDERLOGS }}
 
           TZ: America/Sao_Paulo
         run: python -m src.main

@@ -8,7 +8,7 @@ load_dotenv()
 
 def move_emails_failed(espera=10):
     headers = connect_azure()
-    pasta_failed = os.getenv('IDFOLDERLOGS')
+    pasta_failed = os.getenv('AZUREIDFOLDERLOGS')
 
     #Filtrar Assunto
     assunto_failed = 'Run failed'

@@ -8,7 +8,7 @@ load_dotenv()
 
 def move_emails_voos(espera=10):
     headers = connect_azure()
-    pasta_voos = os.getenv('IDFOLDERVOO')
+    pasta_voos = os.getenv('AZUREIDFOLDERVOO')
 
 
     #Filtrar Assunto

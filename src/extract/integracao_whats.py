@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def send_message(send_whats_poa, send_whats_vix):
-    account = os.getenv('ACCOUNT')
-    token = os.getenv('TOKEN')
-    num_from = os.getenv('NUMFROM')
-    num_to = os.getenv('NUMTO')
+    account = os.getenv('TWILIOACCOUNT')
+    token = os.getenv('TWILIOTOKEN')
+    num_from = os.getenv('TWILIONUMFROM')
+    num_to = os.getenv('TWILIONUMTO')
     if not send_whats_poa and send_whats_vix:
         return
     else:
