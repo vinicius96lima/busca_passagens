@@ -50,6 +50,7 @@ jobs:
           TOKEN: ${{ secrets.TOKEN }}
           NUMFROM: ${{ secrets.NUMFROM }}
           NUMTO: ${{ secrets.NUMTO }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
           TOKENAZUREGIT: ${{ secrets.TOKENAZUREGIT }}
           IDFOLDERVOO: ${{ secrets.IDFOLDERVOO }}
           IDFOLDERLOGS: ${{ secrets.IDFOLDERLOGS }}
