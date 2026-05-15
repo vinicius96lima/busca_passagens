@@ -46,6 +46,15 @@ jobs:
           EMAIL: ${{ secrets.EMAIL }}
           EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
           APP_KEY: ${{ secrets.APP_KEY }}
+          ACCOUNT: ${{ secrets.ACCOUNT }}
+          TOKEN: ${{ secrets.TOKEN }}
+          NUMFROM: ${{ secrets.NUMFROM }}
+          NUMTO: ${{ secrets.NUMTO }}
+          TOKENAZUREGIT: ${{ secrets.TOKENAZUREGIT }}
+          IDFOLDERVOO: ${{ secrets.IDFOLDERVOO }}
+          IDFOLDERLOGS: ${{ secrets.IDFOLDERLOGS }}
+          ID: ${{ secrets.ID }}
+
           TZ: America/Sao_Paulo
         run: python src/main.py
 
