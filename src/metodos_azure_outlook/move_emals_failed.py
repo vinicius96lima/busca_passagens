@@ -21,9 +21,10 @@ def move_emails_failed(espera=10):
     emails = res.json()
 
     #Mover Emails
-    body = {
+    body_move = {
         "destinationId": pasta_failed
     }
+    body_read = {"isRead": "True"}
 
     if not emails['value']:
         print('Sem emails de falha para serem movidos')
@@ -34,8 +35,10 @@ def move_emails_failed(espera=10):
             destiantario = email["from"]["emailAddress"]["address"]
             received_date = email['receivedDateTime']
             message_id = email["id"]
+            read_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}")
+            res_read = requests.patch(read_url, headers=headers, json=body_read)
             move_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}/move")
-            res = requests.post(move_url, headers=headers, json=body)
+            res = requests.post(move_url, headers=headers, json=body_move)
             time.sleep(espera)
             print('Emails de falhas movidos com sucesso')
 
