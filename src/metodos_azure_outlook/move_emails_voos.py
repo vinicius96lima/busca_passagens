@@ -37,6 +37,7 @@ def move_emails_voos(espera=10):
             message_id = email["id"]
             move_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}/move")
             res = requests.post(move_url, headers=headers, json=body)
+            time.sleep(espera)
             print('Emails com voos movidos com sucesso')
 
 
