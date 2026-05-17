@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 
-def move_emails_failed(espera=10):
+def move_emails_failed(espera=0):
     headers = connect_azure()
     pasta_failed = os.getenv('AZUREIDFOLDERLOGS')
 
@@ -24,7 +24,7 @@ def move_emails_failed(espera=10):
     body_move = {
         "destinationId": pasta_failed
     }
-    body_read = {"isRead": "True"}
+    body_read = {"isRead": True}
 
     if not emails['value']:
         print('Sem emails de falha para serem movidos')

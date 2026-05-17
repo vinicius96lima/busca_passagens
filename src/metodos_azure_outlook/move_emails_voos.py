@@ -1,4 +1,5 @@
 from src.services.connect_actions import connect_azure
+from src.metodos_azure_outlook.move_emals_failed import move_emails_failed
 from dotenv import load_dotenv
 import requests
 import time
@@ -25,7 +26,7 @@ def move_emails_voos(espera=10):
     body_move = {
         "destinationId": pasta_voos
     }
-    body_read = {"isRead": "True"}
+    body_read = {"isRead": True}
 
     if not emails['value']:
         print('Sem emails para serem movidos')
@@ -43,6 +44,7 @@ def move_emails_voos(espera=10):
 
             time.sleep(espera)
             print('Emails com voos movidos com sucesso')
+    return move_emails_failed(10)
 
 
 

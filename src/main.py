@@ -26,8 +26,6 @@ def main():
     voo_poa = enviar_email_poa(voos)
     voo_vix = enviar_email_vix(voos)
     send_message(voo_poa, voo_vix)
-    move_emails_voos()
-    move_emails_failed()
     print(f"✅ Busca finalizada: {datetime.today().strftime('%d/%m/%Y %H:%M')}")
 
 
