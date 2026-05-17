@@ -46,7 +46,6 @@ def move_emails_voos(espera=10):
             print('Emails com voos movidos com sucesso')
     return move_emails_failed(10)
 
-move_emails_voos(10)
 
 
 
