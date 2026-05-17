@@ -2,13 +2,13 @@ name: Buscar Passagens
 
 on:
   schedule:
-    - cron: "0 17 * * *"
-    - cron: "10 17 * * *"
+    - cron: "15 14 * * *"
+    - cron: "20 14 * * *"
   workflow_dispatch:
 
 jobs:
   busca-voos:
-    if: github.event.schedule == '0 17 * * *'
+    if: github.event.schedule == '15 14 * * *'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
         run: python -m src.main
 
   move_emails:
-    if: github.event.schedule == '10 17 * * *'
+    if: github.event.schedule == '20 14 * * *'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
