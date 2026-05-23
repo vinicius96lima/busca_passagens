@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 
-def move_emails_failed(espera=0):
+def move_emails_failed():
     headers = connect_azure()
     pasta_failed = os.getenv('AZUREIDFOLDERLOGS')
 
@@ -29,7 +29,6 @@ def move_emails_failed(espera=0):
     if not emails['value']:
         print('Sem emails de falha para serem movidos')
     else:
-        time.sleep(espera)
         for email in emails["value"]:
             subject = email["subject"]
             destiantario = email["from"]["emailAddress"]["address"]
@@ -39,7 +38,6 @@ def move_emails_failed(espera=0):
             res_read = requests.patch(read_url, headers=headers, json=body_read)
             move_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}/move")
             res = requests.post(move_url, headers=headers, json=body_move)
-            time.sleep(espera)
             print('Emails de falhas movidos com sucesso')
 
 
