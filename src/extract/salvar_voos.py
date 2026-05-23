@@ -29,7 +29,5 @@ def salvar_voo(top10):
     else:
         df_final = df_novo
 
-    df_final.to_excel(historico_busca, index=False)
-    print(f"{len(registros)} voos salvos em {historico_busca}")
 
     return df_final

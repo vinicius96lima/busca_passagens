@@ -41,8 +41,12 @@ jobs:
           APP_KEY: ${{ secrets.APP_KEY }}
           TWILIOACCOUNT: ${{ secrets.TWILIOACCOUNT }}
           TWILIOTOKEN: ${{ secrets.TWILIOTOKEN }}
-          TWILIONUMFROM: ${{ secrets.TWILIONUMFROM }}
           TWILIONUMTO: ${{ secrets.TWILIONUMTO }}
+          TWILIONUMFROM: ${{ secrets.TWILIONUMFROM }}
+          TELEGRANTOKEN: ${{ secrets.TELEGRANTOKEN }}
+          TELEGRANIDCHAT: ${{ secrets.TELEGRANIDCHAT }}
+          AZUREARMAZENAMENTOURL: ${{ secrets.AZUREARMAZENAMENTOURL }}
+          AZURECONTAINERNAME: ${{ secrets.AZURECONTAINERNAME }}
           TZ: America/Sao_Paulo
         run: python -m src.main
 

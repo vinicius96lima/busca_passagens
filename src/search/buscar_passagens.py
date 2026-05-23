@@ -1,12 +1,24 @@
 from dotenv import load_dotenv
-from serpapi import GoogleSearch
+from serpapi import Client
 import os
+
 
 load_dotenv()
 api_key = os.getenv("SERPAPI_KEY")
+cliente = Client(api_key=api_key)
+account = cliente.account()
 
 def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adultos=2):
     todos_voos = []
+
+    if account['total_searches_left'] <= 0:
+        return []
+
+    print(
+        f"Créditos restantes: {account['total_searches_left']} | "
+        f"Usados: {account['this_month_usage']} | "
+        f"Limite: {account['searches_per_month']}"
+    )
 
     for origem in origens:
         print(f'Iniciando Buscas com Origem, {origem}')
@@ -24,11 +36,9 @@ def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adul
                 "hl": "pt",
                 "adults": adultos,
                 "type": "1",
-                "api_key": os.getenv("SERPAPI_KEY")
             }
 
-            search = GoogleSearch(params)
-            result = search.get_dict()
+            result = cliente.search(params)
 
             # atribui a váriavel os melhores valores segundo o google, com base em combinações, e caso não encontre, o código não é quebrado, pois retorna uma lista vazia.
             melhores = result.get("best_flights", [])

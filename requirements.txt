@@ -6,3 +6,4 @@ requests
 pyodbc
 twilio
 msal
+azure.storage.blob

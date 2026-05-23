@@ -5,8 +5,8 @@ from src.search.buscar_passagens import buscar_passagens
 from src.extract.insert_sql import inserir_base
 from src.extract.salvar_voos import salvar_voo
 from src.extract.integracao_whats import send_message
-from src.metodos_azure_outlook.move_emails_voos import move_emails_voos
-from src.metodos_azure_outlook.move_emals_failed import move_emails_failed
+from src.extract.integracao_telegram import send_message_telegram
+from src.extract.save_voos_azure import azure_load_xml
 import traceback
 
 
@@ -21,11 +21,17 @@ def main():
         adultos=2
     )
 
-    salvar_voos = salvar_voo(voos)
-    inserir_base(salvar_voos)
+    if not voos:
+        print("❌ Nenhum voo encontrado ou sem créditos.")
+        return
+
+    voos_salvos = salvar_voo(voos)
+    azure_load_xml(voos_salvos)
+    inserir_base(voos_salvos)
     voo_poa = enviar_email_poa(voos)
     voo_vix = enviar_email_vix(voos)
     send_message(voo_poa, voo_vix)
+    send_message_telegram(voo_poa, voo_vix)
     print(f"✅ Busca finalizada: {datetime.today().strftime('%d/%m/%Y %H:%M')}")
 
 
@@ -36,7 +42,6 @@ if __name__ == "__main__":
         print("ERRO:")
         print(e)
         traceback.print_exc()
-        main()
 
 
 

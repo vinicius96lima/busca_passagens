@@ -5,6 +5,8 @@ venv/
 .idea/
 *.xlsx
 *.xlsm
+*.xls
 *.json
 *.bin
+*.pbix
 src/services/conexao_outlook_local.py

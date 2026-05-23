@@ -25,7 +25,8 @@ def enviar_email_vix(voos):
     link = melhor_voo_VIX.get('link')
     print(f'voo poa {origem}, {destino}, {preco}')
 
-    send_vix_whats = origem, destino, preco, link
+    send_vix_whats = f"✅ {origem} → {destino} | R${preco}\n" \
+                     f"🔗 {link}\n\n"
 
     corpo = f"""
         <h2>Bom dia! Aqui está o melhor voo encontrado hoje:
