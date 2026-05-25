@@ -1,6 +1,6 @@
 pandas
 python-dotenv
-google-search-results
+serpapi==0.1.5
 openpyxl
 requests
 pyodbc
