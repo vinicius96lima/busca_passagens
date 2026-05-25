@@ -41,7 +41,7 @@ def move_emails_voos():
             move_url = (f"https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/{message_id}/move")
             res = requests.post(move_url, headers=headers, json=body_move)
             print('Emails com voos movidos com sucesso')
-    return move_emails_failed
+    return move_emails_failed()
 
 move_emails_voos()
 
