@@ -80,19 +80,19 @@ def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adul
                     print(f"❌ Voo acima do limite!"
                           f"{origem} → {destino} | R${preco} > R${valor_maximo}")
 
-        todos_voos_poa = []
-        preco_visto_poa = set()
+        todos_voos_rec = []
+        preco_visto_rec = set()
         for voo in todos_voos:
             flights = voo.get('flights',[])
             preco = voo['price']
             if flights and preco:
                 destino = flights[0]['arrival_airport']['id']
-                if destino == 'POA' and preco not in preco_visto_poa:
-                    preco_visto_poa.add(preco)
-                    todos_voos_poa.append(voo)
+                if destino == 'REC' and preco not in preco_visto_rec:
+                    preco_visto_rec.add(preco)
+                    todos_voos_rec.append(voo)
 
-        todos_voos_poa = sorted(todos_voos_poa, key=lambda x: x['price'])
-        top10poa = todos_voos_poa[:10]
+        todos_voos_rec = sorted(todos_voos_rec, key=lambda x: x['price'])
+        top10rec = todos_voos_rec[:10]
 
         todos_voos_vix = []
         preco_visto_vix = set()
@@ -107,7 +107,7 @@ def buscar_passagens(origens, destinos, data_ida, data_volta, valor_maximo, adul
 
         todos_voos_vix = sorted(todos_voos_vix, key=lambda x: x['price'])
         top10vix = todos_voos_vix[:10]
-        voos_unificados = top10poa + top10vix
+        voos_unificados = top10rec + top10vix
 
         #Salva no histórico
         if voos_unificados:

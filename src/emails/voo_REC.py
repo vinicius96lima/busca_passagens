@@ -5,26 +5,28 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
-def enviar_email_poa(voos):
+def enviar_email_rec(voos):
     if not voos:
         print('Nenhum voo para enviar')
         return
 
-    voos_poa = [
+    print("Quantidade de voos:", len(voos))
+
+    voos_rec = [
         voo for voo in voos
-        if voo.get('destino_busca') == 'POA'
+        if voo.get('destino_busca') == 'REC'
     ]
 
 
-    melhor_voo_POA = min(voos_poa, key=lambda x: x.get('price', 0))
-    preco = melhor_voo_POA.get('price')
-    origem = melhor_voo_POA.get('origem_busca')
-    destino = melhor_voo_POA.get('destino_busca')
-    duracao = melhor_voo_POA.get('total_duration')
-    link = melhor_voo_POA.get('link')
+    melhor_voo_REC = min(voos_rec, key=lambda x: x.get('price', 0))
+    preco = melhor_voo_REC.get('price')
+    origem = melhor_voo_REC.get('origem_busca')
+    destino = melhor_voo_REC.get('destino_busca')
+    duracao = melhor_voo_REC.get('total_duration')
+    link = melhor_voo_REC.get('link')
     print(f'voo poa {origem}, {destino}, {preco}')
 
-    send_poa_whats = f"✅ {origem} → {destino} | R${preco}\n"\
+    send_rec_whats = f"✅ {origem} → {destino} | R${preco}\n"\
                      f"🔗 {link}\n\n"
 
     corpo = f"""
@@ -64,4 +66,4 @@ def enviar_email_poa(voos):
     except Exception as e:
         print(f'Erro ao enviar e-mail, {e}')
 
-    return send_poa_whats
+    return send_rec_whats
