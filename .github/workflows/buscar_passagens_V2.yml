@@ -1,0 +1,63 @@
+name: Buscar Passagens
+
+on:
+  schedule:
+    - cron: "30 18 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  executar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar ODBC Driver 18
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl gnupg unixodbc-dev
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list \
+          | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Rodar Busca Voos
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          DATABASE: ${{ secrets.DATABASE }}
+          UID: ${{ secrets.UID }}
+          SENHASQL: ${{ secrets.SENHASQL }}
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_DESTINO: ${{ secrets.EMAIL_DESTINO }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          TWILIOACCOUNT: ${{ secrets.TWILIOACCOUNT }}
+          TWILIOTOKEN: ${{ secrets.TWILIOTOKEN }}
+          TWILIONUMTO: ${{ secrets.TWILIONUMTO }}
+          TWILIONUMFROM: ${{ secrets.TWILIONUMFROM }}
+          TELEGRANTOKEN: ${{ secrets.TELEGRANTOKEN }}
+          TELEGRANIDCHAT: ${{ secrets.TELEGRANIDCHAT }}
+          AZUREARMAZENAMENTOURL: ${{ secrets.AZUREARMAZENAMENTOURL }}
+          AZURECONTAINERNAME: ${{ secrets.AZURECONTAINERNAME }}
+          TZ: America/Sao_Paulo
+        run: python -m src.main
+
+      - name: Aguardar emails chegarem
+        run: sleep 600  # espera 10 minutos
+
+      - name: Mover Emails
+        env:
+          AZURECLIENT_ID: ${{ secrets.AZURECLIENT_ID }}
+          AZURETOKENAZUREGIT: ${{ secrets.AZURETOKENAZUREGIT }}
+          AZUREIDFOLDERVOO: ${{ secrets.AZUREIDFOLDERVOO }}
+          AZUREIDFOLDERLOGS: ${{ secrets.AZUREIDFOLDERLOGS }}
+        run: python -m src.metodos_azure_outlook.move_emails_voos
